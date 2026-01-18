@@ -131,9 +131,10 @@ private struct TextViewRepresentable: NSViewRepresentable {
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
         let textView = scrollView.documentView as! STTextView
 
+        let txt = NSAttributedString(styledAttributedString(textView.typingAttributes))
         if !context.coordinator.isUserEditing && txt.string != textView.attributedText?.string {
             context.coordinator.isUpdating = true
-            textView.attributedText = NSAttributedString(styledAttributedString(textView.typingAttributes))
+            textView.attributedText = txt
             context.coordinator.isUpdating = false
         }
         context.coordinator.isUserEditing = false
