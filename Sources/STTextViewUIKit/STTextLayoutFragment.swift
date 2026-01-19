@@ -24,8 +24,7 @@ final class STTextLayoutFragment: NSTextLayoutFragment {
          if showsInvisibleCharacters{
              if let lineFragment = textLineFragments.last {
                  let utf16 = lineFragment.attributedString.string.utf16
-                 if let character = utf16.last{
-                     let font = lineFragment.attributedString.attribute(.font, at: utf16.count - 1, effectiveRange: nil) as? UIFont
+                 if let character = utf16.last, let font = lineFragment.attributedString.attribute(.font, at: utf16.count - 1, effectiveRange: nil) as? UIFont{
                      
                      let symbol: Character = switch character {
                      case 0x0020: "\u{00B7}" // • Space
