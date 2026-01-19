@@ -19,11 +19,43 @@ final class STTextLayoutFragment: NSTextLayoutFragment {
         super.init(coder: coder)
     }
 
-    // Provide default line height based on the typingattributed. By default return (0, 0, 10, 14)
-    //
-    // override var layoutFragmentFrame: CGRect {
-    //    super.layoutFragmentFrame
-    // }
+     override var layoutFragmentFrame: CGRect {
+         var frame = super.layoutFragmentFrame
+         if showsInvisibleCharacters{
+             if let lineFragment = textLineFragments.last {
+                 let utf16 = lineFragment.attributedString.string.utf16
+                 if let character = utf16.last{
+                     let font = lineFragment.attributedString.attribute(.font, at: utf16.count - 1, effectiveRange: nil) as? UIFont
+                     
+                     let symbol: Character = switch character {
+                     case 0x0020: "\u{00B7}" // • Space
+                     case 0x0009: "\u{00BB}" // » Tab
+                     case 0x000A: "\u{00AC}" // ¬ Line Feed
+                     case 0x000D: "\u{21A9}" // ↩ Carriage Return
+                     case 0x00A0: "\u{235F}" // ⎵ Non-Breaking Space
+                     case 0x200B: "\u{205F}" // ⸱ Zero Width Space
+                     case 0x200C: "\u{200C}" // ‌ Zero Width Non-Joiner
+                     case 0x200D: "\u{200D}" // ‍ Zero Width Joiner
+                     case 0x2060: "\u{205F}" //   Word Joiner
+                     case 0x2028: "\u{23CE}" // ⏎ Line Separator
+                     case 0x2029: "\u{00B6}" // ¶ Paragraph Separator
+                     default: "\u{00B7}" // • Default symbol for unspecified whitespace
+                     }
+
+                     let attributes: [NSAttributedString.Key: Any] = [
+                         .font: font,
+                         .foregroundColor: UIColor.placeholderText
+                     ]
+
+                     let symbolString = String(symbol)
+                     let charSize = symbolString.size(withAttributes: attributes)
+                     frame.size.width = frame.size.width + charSize.width
+
+                 }
+             }
+         }
+         return frame
+     }
 
     override func draw(at point: CGPoint, in context: CGContext) {
         // Layout fragment draw text at the bottom (after apply baselineOffset) but ignore the paragraph line height
