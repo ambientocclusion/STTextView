@@ -150,9 +150,10 @@ private struct TextViewRepresentable: UIViewRepresentable {
     }
 
     func updateUIView(_ textView: STTextView, context: Context) {
-        if !context.coordinator.isUserEditing {
+        let txt = NSAttributedString(styledAttributedString(textV
+        if !context.coordinator.isUserEditing, txt.string != textView.attributedText?.string {
             context.coordinator.isUpdating = true
-            textView.attributedText = NSAttributedString(styledAttributedString(textView.typingAttributes))
+            textView.attributedText = txt
             context.coordinator.isUpdating = false
         }
         context.coordinator.isUserEditing = false
