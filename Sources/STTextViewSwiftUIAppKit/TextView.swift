@@ -101,6 +101,8 @@ private struct TextViewRepresentable: NSViewRepresentable {
             textView.isAutomaticTextCompletionEnabled = false
         }
 
+        textView.showsInvisibleCharacters = options.contains(.showInvisibleCharacters)
+
         if options.contains(.showLineNumbers) {
             textView.gutterView?.font = textView.font
             textView.gutterView?.textColor = .secondaryLabelColor
@@ -171,6 +173,10 @@ private struct TextViewRepresentable: NSViewRepresentable {
                 textView.gutterView?.font = textView.font
                 textView.gutterView?.textColor = .secondaryLabelColor
             }
+        }
+
+        if textView.showsInvisibleCharacters != options.contains(.showInvisibleCharacters) {
+            textView.showsInvisibleCharacters = options.contains(.showInvisibleCharacters)
         }
 
         textView.needsLayout = true

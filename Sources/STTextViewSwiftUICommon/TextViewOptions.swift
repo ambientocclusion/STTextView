@@ -51,4 +51,9 @@ public struct TextViewOptions: OptionSet, Sendable {
     @available(iOS, unavailable)
     @available(macCatalyst, unavailable)
     public static let disableTextCompletion = TextViewOptions(rawValue: 1 << 8)
+
+
+    /// Shows invisible characters.
+    public static let showInvisibleCharacters = TextViewOptions(rawValue: 1 << 9)
+
 }

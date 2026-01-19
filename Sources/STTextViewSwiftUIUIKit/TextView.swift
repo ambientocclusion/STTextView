@@ -128,6 +128,8 @@ private struct TextViewRepresentable: UIViewRepresentable {
             textView.gutterView?.textColor = .secondaryLabel
         }
 
+        textView.showsInvisibleCharacters = options.contains(.showInvisibleCharacters)
+
         context.coordinator.isUpdating = true
         textView.attributedText = NSAttributedString(styledAttributedString(textView.typingAttributes))
         context.coordinator.isUpdating = false
@@ -197,6 +199,11 @@ private struct TextViewRepresentable: UIViewRepresentable {
             }
             textView.setNeedsLayout()
         }
+
+        if textView.showsInvisibleCharacters != options.contains(.showInvisibleCharacters) {
+            textView.showsInvisibleCharacters = options.contains(.showInvisibleCharacters)
+        }
+
 
         if let contentInsets {
             textView.contentInset = contentInsets.uiEdgeInsets(for: textView)
